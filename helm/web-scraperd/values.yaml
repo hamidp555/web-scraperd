@@ -1,0 +1,51 @@
+
+replicaCount: 2
+
+image:
+  repository: web-scraperd
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 6800
+  targetPort: 6800
+  name: http
+  protocol: TCP
+
+resources: 
+  limits:
+    cpu: "1.0"
+    memory: 1Gi
+  requests:
+    cpu: "1.0"
+    memory: 1Gi
+  
+redis:
+  host: redis-master.default.svc.cluster.local
+  port: 6379
+
+sync:
+  image:
+    repository: web-scraperd-sync
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources: 
+  limits:
+    cpu: "250m"
+    memory: "256Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  gitEndpoint: "https://github.com/hamidp555/web-scraper"
+
+worker:
+  queue: workers:spiders
+  maxNumProcesses: 4
+  host: localhost
+  port: 6800
+  endpoints:
+    schedule: schedule.json
+    status: daemonstatus.json
+    addVersion: addversion.json
+  

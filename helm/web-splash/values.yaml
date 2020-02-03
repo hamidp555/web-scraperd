@@ -1,0 +1,22 @@
+
+replicaCount: 1
+
+image:
+  repository: scrapinghub/splash
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8050
+  targetPort: 8050
+  name: http
+  protocol: TCP
+
+resources: 
+  limits:
+    cpu: "1.0"
+    memory: 1.5Gi
+  requests:
+    cpu: "1.0"
+    memory: 1.5Gi

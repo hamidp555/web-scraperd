@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "web-splash.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "web-splash.name" . }}
+    helm.sh/chart: {{ include "web-splash.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: {{ .Values.service.protocol }}
+      name: {{ .Values.service.name }}
+  selector:
+    app.kubernetes.io/name: {{ include "web-splash.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

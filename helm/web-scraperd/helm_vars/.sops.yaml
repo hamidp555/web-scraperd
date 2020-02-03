@@ -1,0 +1,5 @@
+# creation rules are evaluated sequentially, the first match wins
+creation_rules:
+  # The absence of a path_regex means it will match everything
+  - pgp: "2876DF5FFD99866A25617387778CB5AEB179A4A6"
+

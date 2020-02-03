@@ -1,0 +1,50 @@
+apiVersion: skaffold/v2alpha1
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: web-scraper
+    context: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraper
+  - image: web-scraperd
+    context: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd
+  - image: web-scraperd-sync
+    context: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd-sync
+
+deploy:
+  helm:
+    releases:
+    - name: scr
+      namespace: default
+      recreatePods: true
+      remote: false
+      chartPath: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraper/helm/web-scraper
+      imageStrategy:
+        fqn: {}
+    - name: scrd
+      namespace: default
+      recreatePods: true
+      remote: false
+      useHelmSecrets: true
+      chartPath: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd/helm/web-scraperd
+      valuesFiles:
+        - /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd/helm/web-scraperd/helm_vars/secrets.yaml
+        - /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd/helm/web-scraperd/values.yaml
+      imageStrategy:
+        fqn: {}
+    - name: redis
+      namespace: default
+      chartPath: stable/redis
+      remote: true
+      setValues:
+        cluster.enabled: false
+        usePassword: true
+        usePasswordFile: true
+        existingSecret: redis-credentials
+        existingSecretPasswordKey: redis-password
+    - name: sps
+      namespace: default
+      chartPath: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraperd/helm/web-splash
+      remote: false
+      imageStrategy:
+        fqn: {}
