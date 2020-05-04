@@ -14,13 +14,13 @@ build:
 deploy:
   helm:
     releases:
-    - name: scr
-      namespace: default
-      recreatePods: true
-      remote: false
-      chartPath: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraper/helm/web-scraper
-      imageStrategy:
-        fqn: {}
+    # - name: scr
+    #   namespace: default
+    #   recreatePods: true
+    #   remote: false
+    #   chartPath: /Users/hamid.poursepanj/Documents/projects/lsa/web-scraper/helm/web-scraper
+    #   imageStrategy:
+    #     fqn: {}
     - name: scrd
       namespace: default
       recreatePods: true
@@ -34,7 +34,7 @@ deploy:
         fqn: {}
     - name: redis
       namespace: default
-      chartPath: stable/redis
+      chartPath: bitnami/redis
       remote: true
       setValues:
         cluster.enabled: false
